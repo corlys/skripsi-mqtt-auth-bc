@@ -8,16 +8,15 @@ router.get("/", (req, res) => {
     res.send(clients);
 })
 
-router.post("/", async (req, res) => {
-    const { id, username, password } = req.body
-    const _password = Buffer.from(password).toString()
+router.post("/", (req, res) => {
+    const { id, topic } = req.body
     let accounts = [];
     web3.eth.getAccounts().then(_accounts => {
         accounts = _accounts
         // console.log(accounts)
-        mqttsc.methods.authenticate(id, username, _password).call({ from: accounts[0] }).then(_bool => {
-            const authenticated = _bool
-            if (authenticated) {
+        mqttsc.methods.authorize(id, topic).call({ from: accounts[0] }).then(_bool => {
+            const authorized = _bool
+            if (authorized) {
                 console.log('kena masuk YES')
                 res.send("YES")
             } else {
@@ -27,8 +26,6 @@ router.post("/", async (req, res) => {
         })
     })
     // console.log(req.body)
-    // console.log(Buffer.from(req.body.password).toString());
-
 })
 
 export default router;
