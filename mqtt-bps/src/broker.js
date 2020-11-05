@@ -64,23 +64,23 @@ aedes.authorizePublish = (client, packet, callback) => {
             // console.log(response.data)
             if (response.data == "YES") {
                 console.log(`client ${client.id} is authorized to publishe with topic : ${packet.topic}`)
-                callback(null, true)
+                callback(null)
             } else if (response.data == "NO") {
                 console.log('client is not authorized to use ', packet.topic)
                 var error = new Error('Identifier error')
                 error.returnCode = 2
-                callback(error, null)
+                callback(error)
             } else {
                 console.log('something is wrong, error in else section of authorizedPublish')
                 var error = new Error('Identifier error')
                 error.returnCode = 2
-                callback(error, null)
+                callback(error)
             }
         }, (error) => {
             console.log(error)
         })
     } catch (error) {
-
+        console.log(error)
     }
 }
 

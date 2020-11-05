@@ -1,11 +1,11 @@
 // MQTT publisher
 const mqtt = require('mqtt')
 
-clientId = '0';
+
 var options = {
-    clientId: clientId,
-    username: "candy",
-    password: "cone"
+    clientId: "0",
+    username: "jojo",
+    password: "ketua"
 }
 
 var client = mqtt.connect('mqtt://localhost:8001', options)

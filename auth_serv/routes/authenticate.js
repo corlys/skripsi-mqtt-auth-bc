@@ -18,10 +18,10 @@ router.post("/", async (req, res) => {
         mqttsc.methods.authenticate(id, username, _password).call({ from: accounts[0] }).then(_bool => {
             const authenticated = _bool
             if (authenticated) {
-                console.log('kena masuk YES')
+                console.log(`client ${id} dengan username : ${username} lolos authentication`)
                 res.send("YES")
             } else {
-                console.log('kena masuk NO')
+                console.log(`client ${id} dengan username : ${username} tidak lolos authentication`)
                 res.send("NO")
             }
         })

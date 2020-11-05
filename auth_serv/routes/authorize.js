@@ -17,10 +17,10 @@ router.post("/", (req, res) => {
         mqttsc.methods.authorize(id, topic).call({ from: accounts[0] }).then(_bool => {
             const authorized = _bool
             if (authorized) {
-                console.log('kena masuk YES')
+                console.log(`client ${id} authorized untuk menggunakan topik ${topic}`)
                 res.send("YES")
             } else {
-                console.log('kena masuk NO')
+                console.log(`client ${id} tidak authorized untuk menggunakan topik ${topic}`)
                 res.send("NO")
             }
         })
