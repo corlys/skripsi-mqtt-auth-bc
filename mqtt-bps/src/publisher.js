@@ -4,7 +4,7 @@ const mqtt = require('mqtt')
 
 var options = {
     clientId: "0",
-    username: "jojo",
+    username: "sss",
     password: "ketua"
 }
 
@@ -15,6 +15,10 @@ client.on('connect', async () => {
     // console.log(client)
     setInterval(() => {
         client.publish(topic, message)
-        console.log('Message sent!', message)
+        // console.log('Message sent!', message)
     }, 5000)
+})
+
+client.on('close', () => {
+    client.end();
 })

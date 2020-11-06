@@ -31,7 +31,7 @@ aedes.authenticate = (client, username, password, callback) => {
             if (response.data == "YES") {
                 callback(null, true)
             } else {
-                console.log('client is not valid')
+                console.log(`client ${client.id} is not passing authentication block with ${password} as password`)
                 var error = new Error('Identifier error')
                 error.returnCode = 2
                 callback(error, null)
@@ -63,10 +63,10 @@ aedes.authorizePublish = (client, packet, callback) => {
         }).then((response) => {
             // console.log(response.data)
             if (response.data == "YES") {
-                console.log(`client ${client.id} is authorized to publishe with topic : ${packet.topic}`)
+                console.log(`client ${client.id} is authorized to publish with topic : ${packet.topic}`)
                 callback(null)
             } else if (response.data == "NO") {
-                console.log('client is not authorized to use ', packet.topic)
+                console.log(`client ${client.id} is not authorized to publish with topic : ${packet.topic}`)
                 var error = new Error('Identifier error')
                 error.returnCode = 2
                 callback(error)
@@ -99,7 +99,7 @@ aedes.authorizeSubscribe = (client, packet, callback) => {
                 console.log(`client ${client.id} is authorized to subscribe with topic : ${packet.topic}`)
                 callback(null, packet)
             } else if (response.data == "NO") {
-                console.log('client is not authorized to use ', packet.topic)
+                console.log(`client ${client.id} is not authorized to subscribe with topic : ${packet.topic}`)
                 return callback(new Error('wrong topic'))
             } else {
                 console.log('something is wrong, error in else section of authorizedPublish')
@@ -117,9 +117,9 @@ aedes.on('client', (client) => {
     console.log(`client ${client.id} passed authentication`)
 })
 
-aedes.on('subscribe', (subscriptions, client) => {
-    console.log('someone subscribe')
-})
+// aedes.on('subscribe', (subscriptions, client) => {
+//     console.log('someone subscribe')
+// })
 
 aedes.on("connectionError", (client, error) => {
     console.log(`error : ${error}, on client ${client.id}`)

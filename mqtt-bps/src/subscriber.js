@@ -10,7 +10,7 @@ var options = {
 }
 
 var client = mqtt.connect('mqtt://localhost:8001', options)
-var topic = 'temp'
+var topic = 'speed'
 
 client.on('connect', () => {
     client.subscribe(topic)
@@ -19,4 +19,8 @@ client.on('connect', () => {
 client.on('message', (topic, message) => {
     message = message.toString()
     console.log(message)
+})
+
+client.on('close', () => {
+    client.end();
 })
