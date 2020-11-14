@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import web3 from "../eth/web3";
 import mqttsc from "../eth/mqttsc";
 
-import { makeStyles } from '@material-ui/core/styles';
+import ChangeTopic from "./ChangeTopic.component";
+
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-
+import { AddCircle } from "@material-ui/icons";
 
 class ClientRow extends Component {
 
@@ -25,7 +24,8 @@ class ClientRow extends Component {
         super(props);
         this.state = {
             topic: [],
-            open: false
+            open: false,
+            edit: false
         }
     }
 
@@ -41,6 +41,10 @@ class ClientRow extends Component {
         this.setState(_prevState => ({ open: !_prevState.open }))
         // const open = !this.state.open;
         // this.setState({ open: open });
+    }
+
+    turnEdit = () => {
+        this.setState(_prevState => ({ edit: !_prevState.edit }))
     }
 
     render() {
@@ -63,13 +67,13 @@ class ClientRow extends Component {
                         <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                             <Box margin={1}>
                                 <Typography variant="h6" gutterBottom component="div">
-                                    Topics
+                                    Topics <AddCircle color="primary" />
                                 </Typography>
                                 <Table size="small" aria-label="purchases">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell>Topic</TableCell>
-                                            <TableCell align="right">Edit</TableCell>
+                                            <TableCell align="right">Change</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -99,8 +103,12 @@ class ClientRow extends Component {
                                                 // return;
                                                 return (
                                                     <TableRow key={_topic}>
-                                                        <TableCell component="th" scope="row">{_topic}</TableCell>
-                                                        <TableCell align="right">Button</TableCell>
+                                                        {/* <TableCell component="th" scope="row">{_topic}</TableCell>
+                                                        <TableCell align="right">
+                                                            {this.state.edit ? <Input placeholder="Edit Disini" /> : null}
+                                                            <Button variant="contained" color="primary" onClick={this.turnEdit}>Edit</Button>
+                                                        </TableCell> */}
+                                                        <ChangeTopic id={id} topic={_topic} />
                                                     </TableRow>
                                                 );
                                             })

@@ -5,6 +5,17 @@
   grid-template-rows: auto 1fr auto;
 }
 
+.main{
+  min-height: 90vh;
+  background-color: aquamarine;
+  display: grid;
+  place-items: center;
+}
+
+.mqtt-container {
+  min-width: 70vh;
+  min-height: 50vh;
+}
 
 .App-header {
   background-color: #282c34;
