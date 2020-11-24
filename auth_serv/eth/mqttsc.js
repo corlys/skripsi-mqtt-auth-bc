@@ -3,7 +3,7 @@ import Mqttsc from "./build/Mqttsc.json";
 
 const mqttsc = new web3.eth.Contract(
     Mqttsc.abi,
-    "0x844aF99Dd3586B4b4EBC1ED298b87aAaf1Dc8760"
+    "0xDd7D85924B83e3Ee1D5351eE32FB47a830dAE550"
 );
 
 export default mqttsc;

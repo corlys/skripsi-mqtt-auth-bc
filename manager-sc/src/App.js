@@ -51,6 +51,7 @@ class App extends Component {
         this.setState(_prevState => ({ loading: !_prevState.loading }))
         await mqttsc.methods.addClient(this.state.username, this.state.password).send({ from: this.state.accounts[0] })
         this.setState(_prevState => ({ loading: !_prevState.loading }))
+        window.location.reload();
       }
     } catch (error) {
       console.log(error)
@@ -59,8 +60,8 @@ class App extends Component {
 
   renderRow() {
 
-    return this.state.clients.map((_row) => {
-      return <ClientRow key={_row[0]} id={_row[0]} username={_row[1]} />;
+    return this.state.clients.map((_row, index) => {
+      return <ClientRow key={index} id={_row[0]} username={_row[1]} />;
     })
 
   }

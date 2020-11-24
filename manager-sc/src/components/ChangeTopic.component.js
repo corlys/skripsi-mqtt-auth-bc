@@ -31,6 +31,21 @@ class ChangeTopic extends Component {
             const result = await mqttsc.methods.updateTopic(id, topic, this.state.value).send({ from: this.state.accounts[0] })
             console.log(result)
             this.setState(_prevState => ({ loading: !_prevState.loading }))
+            window.location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    deleteTopic = async () => {
+        const { id, topic } = this.props
+        try {
+            this.setState(_prevState => ({ loading: !_prevState.loading }))
+            const result = await mqttsc.methods.deleteTopic(id, topic).send({ from: this.state.accounts[0] })
+            console.log(result)
+            this.setState(_prevState => ({ loading: !_prevState.loading }))
+
+            window.location.reload();
         } catch (error) {
             console.log(error)
         }
@@ -46,6 +61,7 @@ class ChangeTopic extends Component {
                             <Fragment>
                                 <Input placeholder="Edit Disini" value={this.state.value} onChange={event => this.setState({ value: event.target.value })} />
                                 <Button variant="contained" color="primary" onClick={this.editTopic}>{this.state.loading ? <CircularProgress color="secondary" /> : "Input"}</Button>
+                                <Button variant="contained" color="secondary" onClick={this.deleteTopic}>{this.state.loading ? <CircularProgress color="secondary" /> : "Delete"}</Button>
                             </Fragment>
                             : null
                     }
