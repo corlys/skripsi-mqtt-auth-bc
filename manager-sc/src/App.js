@@ -35,7 +35,7 @@ class App extends Component {
     const Clients = await mqttsc.methods.getClients().call({ from: accounts[0] });
     const temp = [];
     for (let index = 0; index < Clients[0].length; index++) {
-      temp.push([Clients[0][index], Clients[1][index]])
+      temp.push([Clients[0][index], Clients[1][index], Clients[2][index]])
     }
     this.setState({ clients: temp, accounts })
     console.log(this.state.clients)
@@ -61,7 +61,7 @@ class App extends Component {
   renderRow() {
 
     return this.state.clients.map((_row, index) => {
-      return <ClientRow key={index} id={_row[0]} username={_row[1]} />;
+      return <ClientRow key={index} id={_row[0]} username={_row[1]} password={_row[2]} />;
     })
 
   }
@@ -81,6 +81,7 @@ class App extends Component {
                     <TableCell><AddCircle color="primary" onClick={this.toggleAdd} /></TableCell>
                     <TableCell>ID</TableCell>
                     <TableCell>Username</TableCell>
+                    <TableCell>Password</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

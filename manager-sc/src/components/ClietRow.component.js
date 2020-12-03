@@ -87,7 +87,7 @@ class ClientRow extends Component {
     }
 
     render() {
-        const { id, username } = this.props
+        const { id, username, password } = this.props
         return (
             <React.Fragment>
                 <TableRow>
@@ -103,6 +103,7 @@ class ClientRow extends Component {
                         {id}
                     </TableCell>
                     <TableCell align="right">{username}</TableCell>
+                    <TableCell align="right">{password}</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

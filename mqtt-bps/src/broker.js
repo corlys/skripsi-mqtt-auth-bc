@@ -1,20 +1,13 @@
 const options = {
     id: "inibroker"
 }
-
 const aedes = require('aedes')(options)
 const axios = require('axios')
-
 const server = require('net').createServer(aedes.handle)
-
 const PORT = 8001
-
-
-
 server.listen(PORT, () => {
     console.log('Server started listening on port ', PORT)
 })
-
 aedes.authenticate = (client, username, password, callback) => {
     try {
         console.log(`client ${client.id} is entering authentication block with ${password} as password`)
@@ -37,7 +30,7 @@ aedes.authenticate = (client, username, password, callback) => {
                 callback(error, null)
             }
         }, (error) => {
-            console.log('axios error')
+            console.log(error)
             var error = new Error('Axios error')
             error.returnCode = 2
             callback(error, null)
@@ -49,7 +42,6 @@ aedes.authenticate = (client, username, password, callback) => {
         callback(error, null)
     }
 }
-
 aedes.authorizePublish = (client, packet, callback) => {
     try {
         // console.log(`client ${client.id} is entering authorization block`)
@@ -83,7 +75,6 @@ aedes.authorizePublish = (client, packet, callback) => {
         console.log(error)
     }
 }
-
 aedes.authorizeSubscribe = (client, packet, callback) => {
     try {
         axios({
@@ -112,19 +103,12 @@ aedes.authorizeSubscribe = (client, packet, callback) => {
         return callback(new Error('something goes wrong topic'))
     }
 }
-
 aedes.on('client', (client) => {
     console.log(`client ${client.id} passed authentication`)
 })
-
-// aedes.on('subscribe', (subscriptions, client) => {
-//     console.log('someone subscribe')
-// })
-
 aedes.on("connectionError", (client, error) => {
     console.log(`error : ${error}, on client ${client.id}`)
 })
-
 aedes.on("clientDisconnect", (client) => {
     console.log(`disconnect on client ${client.id}`)
 })
