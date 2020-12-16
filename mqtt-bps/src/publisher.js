@@ -6,18 +6,20 @@ var options = {
     password: "12345"
 }
 var client = mqtt.connect('mqtt://localhost:8001', options)
-var topic = 'speed'
+var topic = 'temp'
 message = 'Hello World!'
+let pub = false
 console.log('Membuat koneksi dengan broker')
 client.on('connect', () => {
     console.log(`Memulai koneksi dengan broker dengan id: ${options.clientId}, username: ${options.username}, dan password: ${options.password}`)
-    setInterval(() => {
-        console.log(`Mencoba publish pesan: ${message} dengan topic: ${topic}`)
-        client.publish(topic, message)
-    }, 15000)
+    pub = setInterval(pub_func, 15000, topic, message)
 })
-
 client.on('close', () => {
+    console.log('client close')
+    clearInterval(pub);
     client.end();
 })
-
+function pub_func(_topic, _message) {
+    console.log(`Mencoba publish pesan: ${message} dengan topic: ${topic}`)
+    client.publish(_topic, _message)
+}

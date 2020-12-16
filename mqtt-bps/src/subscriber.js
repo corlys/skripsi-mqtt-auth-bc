@@ -6,7 +6,7 @@ var options = {
     password: "12345"
 }
 var client = mqtt.connect('mqtt://localhost:8001', options)
-var topic = 'speed'
+var topic = 'temp'
 client.on('connect', () => {
     client.subscribe(topic)
 })
@@ -15,5 +15,6 @@ client.on('message', (topic, message) => {
     console.log(message, " with ", topic, "as topic")
 })
 client.on('close', () => {
+    console.log('client close')
     client.end();
 })

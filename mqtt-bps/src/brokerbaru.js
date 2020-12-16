@@ -1,7 +1,7 @@
 const options = {
     id: "inibroker"
 }
-const web3 = require("./eth/web3");
+const web3 = require("./eth/web3-private");
 const mqttbaru = require("./eth/mqttbaru");
 const aedes = require('aedes')(options)
 const server = require('net').createServer(aedes.handle)
@@ -12,35 +12,23 @@ let token = "";
 
 server.listen(PORT, async () => {
     try {
-        console.log('getting accounts')
-        accounts = await web3.eth.getAccounts()
-        console.log(accounts)
-
-        const brokerlist = await mqttbaru.methods.getBroker().call({ from: accounts[3] })
-
-        console.log(brokerlist)
-
-        // brokerlist.map((_return, index) => {
-        //     console.log(Buffer.from(_return[index]).toString())
-        // })
-
-        console.log(`attempting getting token from ${accounts[2]}`)
-        let receipt = await mqttbaru.methods.refreshToken().send({ from: accounts[2] })
+        web3.eth.personal.unlockAccount(accounts[1], 'pass123', 480)
+        console.log(`attempting getting token from ${accounts[1]}`)
+        let receipt = await mqttbaru.methods.refreshToken().send({ from: accounts[1] })
         token = receipt.events.ref_token.returnValues[0]
-        console.log(receipt)
+        // console.log(receipt)
         console.log(receipt.status)
-        console.log(`Server ${accounts[2]} with ${token} started listening on port ${PORT}`)
+        console.log(`Server ${accounts[1]} with ${token} started listening on port ${PORT}`)
     } catch (error) {
         console.log(error)
     }
-
 })
 
 aedes.authenticate = async (client, username, password, callback) => {
     try {
         console.log(`client ${client.id} is entering authentication block in broker(${token}) with ${password} as password`)
         const _password = Buffer.from(password).toString()
-        const authblock = await mqttbaru.methods.authenticate("token", client.id, username, _password).call({ from: accounts[2] });
+        const authblock = await mqttbaru.methods.authenticate(token, client.id, username, _password).call({ from: accounts[1] });
         if (authblock) {
             callback(null, true)
         } else if (!authblock) {
@@ -59,7 +47,7 @@ aedes.authenticate = async (client, username, password, callback) => {
 aedes.authorizePublish = async (client, packet, callback) => {
     try {
         console.log(`client ${client.id} is entering authorization block`)
-        const authblock = await mqttbaru.methods.authorize(token, client.id, packet.topic).call({ from: accounts[2] });
+        const authblock = await mqttbaru.methods.authorize(token, client.id, packet.topic).call({ from: accounts[1] });
         if (authblock) {
             callback(null)
             console.log(`client ${client.id} is authorized to publish with topic : ${packet.topic}`)
@@ -85,7 +73,7 @@ aedes.authorizePublish = async (client, packet, callback) => {
 aedes.authorizeSubscribe = async (client, packet, callback) => {
     try {
         console.log(`client ${client.id} is entering authorization block`)
-        const authblock = await mqttbaru.methods.authorize(token, client.id, packet.topic).call({ from: accounts[2] });
+        const authblock = await mqttbaru.methods.authorize(token, client.id, packet.topic).call({ from: accounts[1] });
         if (authblock) {
             console.log(`client ${client.id} is authorized to subscribe with topic : ${packet.topic}`)
             callback(null, packet)
@@ -113,13 +101,14 @@ aedes.on("clientDisconnect", (client) => {
 
 setInterval(async () => {
     try {
-        const receipt = await mqttbaru.methods.refreshToken().send({ from: accounts[2] })
+        const receipt = await mqttbaru.methods.refreshToken().send({ from: accounts[1] })
         // console.log("receipt : ")
         // console.log(receipt)
 
         if (receipt.status === false) {
+            console.log(receipt)
             console.log('Trying Again, The Receipt from before is down below')
-            const redo = await mqttbaru.methods.refreshToken().send({ from: accounts[2] })
+            const redo = await mqttbaru.methods.refreshToken().send({ from: accounts[1] })
             token = redo.events.ref_token.returnValues[0]
         } else {
             token = receipt.events.ref_token.returnValues[0]
@@ -128,8 +117,9 @@ setInterval(async () => {
             console.log(receipt.events.check.returnValues[0])
         }
     } catch (error) {
-        console.log("Something's Wrong, Here's The Receipt")
-        console.log(receipt)
+        console.log(error)
+        console.log("Something's Wrong")
+        // console.log(receipt)
     }
 }, 90000)
 
