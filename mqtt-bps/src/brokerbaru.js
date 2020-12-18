@@ -7,11 +7,15 @@ const aedes = require('aedes')(options)
 const server = require('net').createServer(aedes.handle)
 const PORT = 8001
 
+let account = "";
 let accounts = [];
 let token = "";
 
 server.listen(PORT, async () => {
     try {
+        // account = '0xDaFA7Bc0a066CBBDE48cf970EEB4C67A495a1277';
+        // account = await web3.eth.personal.importRawKey("edbf799e35bcc79d738094d5e04106b026c20dff9d5dcbe12f4a7d63fba54c12", "pass123").then(console.log)
+        accounts = await web3.eth.getAccounts();
         web3.eth.personal.unlockAccount(accounts[1], 'pass123', 480)
         console.log(`attempting getting token from ${accounts[1]}`)
         let receipt = await mqttbaru.methods.refreshToken().send({ from: accounts[1] })

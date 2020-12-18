@@ -12,7 +12,7 @@ if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
 
         //we are on the server and not running metamask
         //possibly need trufflehdwalletprovider to use mnemonic
-        const ethprovider = new Web3.providers.HttpProvider("http://localhost:8546");
+        const ethprovider = new Web3.providers.HttpProvider("http://localhost:8545");
         web3 = new Web3('http://');
         web3.setProvider(ethprovider);
     } catch (error) {

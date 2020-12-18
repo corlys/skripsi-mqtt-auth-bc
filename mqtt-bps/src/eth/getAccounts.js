@@ -2,7 +2,7 @@
 const Web3 = require('web3');
 const compiledFactory = require("./build/Mqttbaru.json");
 
-const ethprovider = new Web3.providers.HttpProvider("http://localhost:8546");
+const ethprovider = new Web3.providers.HttpProvider("http://localhost:8545");
 const web3 = new Web3('http://');
 web3.setProvider(ethprovider);
 
@@ -14,6 +14,7 @@ const getAcc = async () => {
         console.log("start")
         const accounts = await web3.eth.getAccounts();
         console.log(accounts)
+        // web3.eth.personal.importRawKey("edbf799e35bcc79d738094d5e04106b026c20dff9d5dcbe12f4a7d63fba54c12", "pass123").then(console.log)
     } catch (error) {
         console.log(error)
     }
