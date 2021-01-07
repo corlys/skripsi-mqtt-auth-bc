@@ -2,7 +2,9 @@
 const Web3 = require('web3');
 const compiledFactory = require("./build/Mqttbaru.json");
 
-const ethprovider = new Web3.providers.HttpProvider("http://localhost:8545");
+const ethprovider = new Web3.providers.HttpProvider("http://54.204.186.144:8545");
+// const ethprovider = new Web3.providers.HttpProvider("http://34.194.205.110:8546");
+// const ethprovider = new Web3.providers.HttpProvider("http://52.207.109.45:8547");
 const web3 = new Web3('http://');
 web3.setProvider(ethprovider);
 

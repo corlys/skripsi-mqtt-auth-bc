@@ -7,20 +7,17 @@ const aedes = require('aedes')(options)
 const server = require('net').createServer(aedes.handle)
 const PORT = 8001
 
-let account = "";
 let accounts = [];
 let token = "";
 
 server.listen(PORT, async () => {
     try {
-        // account = '0xDaFA7Bc0a066CBBDE48cf970EEB4C67A495a1277';
-        // account = await web3.eth.personal.importRawKey("edbf799e35bcc79d738094d5e04106b026c20dff9d5dcbe12f4a7d63fba54c12", "pass123").then(console.log)
         accounts = await web3.eth.getAccounts();
-        web3.eth.personal.unlockAccount(accounts[1], 'pass123', 480)
+        // console.log(web3.eth.personal.listAccounts)
+        // web3.eth.personal.unlockAccount(accounts[1], 'password', 3600) //password = password or pass123
         console.log(`attempting getting token from ${accounts[1]}`)
         let receipt = await mqttbaru.methods.refreshToken().send({ from: accounts[1] })
         token = receipt.events.ref_token.returnValues[0]
-        // console.log(receipt)
         console.log(receipt.status)
         console.log(`Server ${accounts[1]} with ${token} started listening on port ${PORT}`)
     } catch (error) {
@@ -106,9 +103,6 @@ aedes.on("clientDisconnect", (client) => {
 setInterval(async () => {
     try {
         const receipt = await mqttbaru.methods.refreshToken().send({ from: accounts[1] })
-        // console.log("receipt : ")
-        // console.log(receipt)
-
         if (receipt.status === false) {
             console.log(receipt)
             console.log('Trying Again, The Receipt from before is down below')
@@ -123,7 +117,6 @@ setInterval(async () => {
     } catch (error) {
         console.log(error)
         console.log("Something's Wrong")
-        // console.log(receipt)
     }
 }, 90000)
 

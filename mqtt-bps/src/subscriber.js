@@ -3,7 +3,7 @@ const mqtt = require('mqtt');
 var options = {
     clientId: "1",
     username: "client2",
-    password: "12345"
+    password: "pass123"
 }
 var client = mqtt.connect('mqtt://localhost:8001', options)
 var topic = 'temp'
