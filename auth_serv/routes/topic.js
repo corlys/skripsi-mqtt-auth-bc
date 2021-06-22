@@ -47,8 +47,8 @@ router.post("/delete", async (req, res) => {
 
 router.post("/update", async (req, res) => {
     try {
-        const { id, topic } = req.body;
-        var transaction = await mqttbaru.methods.updateTopic(id, topic).send({ from: accounts[5] })
+        const { id, oldtopic, newtopic } = req.body;
+        var transaction = await mqttbaru.methods.updateTopic(id, oldtopic, newtopic).send({ from: accounts[5] })
         res.send(transaction)
     } catch (error) {
         console.log("Somethings Wrong on UPDATE TOPIC")
